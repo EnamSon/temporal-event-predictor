@@ -1,7 +1,7 @@
 # src/work_time_prediction/core/predictions.py
 # Logique de prédiction du Machine Learning (sans état global)
 
-from typing import Any
+from typing import Dict, List, Any, Optional
 import pandas as pd
 from datetime import datetime
 
@@ -13,17 +13,22 @@ from work_time_prediction.core.utils.time_converter import minutes_to_time
 from work_time_prediction.core.exceptions import ModelNotTrainedError, IDNotFoundError
 from work_time_prediction.core.model_state import ModelState
 from work_time_prediction.core.utils.temporal_features import get_week_of_month
+from work_time_prediction.core.ml.occurrence_features import create_occurrence_extractor
+from work_time_prediction.core.utils.logging_config import get_logger
+
+logger = get_logger()
 
 
 def generate_predictions(
     model_state: ModelState,
     session_id: str,
     entity_id: str,
-    dates_to_predict: list[datetime]
-) -> list[dict[str, Any]]:
+    dates_to_predict: List[datetime]
+) -> List[Dict[str, Any]]:
     """
     Génère les prédictions pour une liste de dates données.
     Mélange les données historiques réelles et les prédictions ML.
+    Retourne NA pour les jours où aucun événement n'a jamais eu lieu.
     
     Args:
         model_state: État du modèle entraîné
@@ -51,6 +56,13 @@ def generate_predictions(
     # 1. Récupérer l'historique de l'entité
     all_data = get_all_data(session_id)
     entity_history = all_data[all_data[DFCols.ID] == entity_id]
+    
+    if entity_history.empty:
+        logger.warning(f"Aucun historique pour l'entité {entity_id}")
+        raise IDNotFoundError(entity_id)
+    
+    # Créer l'extracteur de features d'occurrence
+    occurrence_extractor = create_occurrence_extractor()
     
     historical_data_map = {
         row[DFCols.DATE].strftime(DATE_FORMAT): {
@@ -113,6 +125,27 @@ def generate_predictions(
                 "historical": is_historical
             })
         else:
+            # Vérifier si on doit prédire pour ce jour
+            should_predict, confidence, reason = occurrence_extractor.should_predict_event(
+                entity_id=entity_id,
+                target_date=date,
+                history=entity_history,
+                min_occurrence_count=2,
+                min_occurrence_rate=0.15
+            )
+            
+            if not should_predict:
+                # Pas assez de données pour prédire -> retourner NA
+                logger.debug(f"Pas de prédiction pour {entity_id} le {date_str}: {reason}")
+                results.append({
+                    "date": date_str,
+                    "weekday": weekday,
+                    "start_time": NA_VALUE,
+                    "end_time": NA_VALUE,
+                    "historical": False
+                })
+                continue
+            
             # Utiliser les données prédites
             if pred_idx < len(pred_start_minutes):
                 start_minutes = float(pred_start_minutes[pred_idx])
@@ -155,7 +188,7 @@ def predict_single_day(
     session_id: str,
     entity_id: str,
     target_date: datetime
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Génère une prédiction pour une seule date.
     

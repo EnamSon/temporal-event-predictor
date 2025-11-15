@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from work_time_prediction.api import router
-from work_time_prediction.core.utils.folder_manager import ensure_directories_exist
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from work_time_prediction.core.session_manager import session_manager
@@ -108,7 +107,6 @@ async def root():
             "session": {
                 "create": "POST /api/session/create",
                 "info": "GET /api/session/info",
-                "list": "GET /api/session/list",
                 "delete": "DELETE /api/session/delete"
             },
             "training": {
