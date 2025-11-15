@@ -255,9 +255,9 @@ If ADMIN_TOKEN is not defined, the application generates an ephemeral token ever
 #### Console Output
 
     ```
-    2025-11-15 19:08:07 - work_time_prediction.security - WARNING - Development mode enable
-    2025-11-15 19:08:07 - work_time_prediction.security - WARNING - Ephemeral admin token generated: dDH8wMr6hG6gUgdiL3SKyS_bsqSufg1Q_AGnh2sSpvY
-    2025-11-15 19:08:07 - work_time_prediction.security - WARNING - For production, define: export ADMIN_TOKEN='your-secure-token'
+    2025-11-15 19:08:07 - temporal_event_predictor.security - WARNING - Development mode enable
+    2025-11-15 19:08:07 - temporal_event_predictor.security - WARNING - Ephemeral admin token generated: dDH8wMr6hG6gUgdiL3SKyS_bsqSufg1Q_AGnh2sSpvY
+    2025-11-15 19:08:07 - temporal_event_predictor.security - WARNING - For production, define: export ADMIN_TOKEN='your-secure-token'
     ```
 
 ### Production Mode
@@ -277,7 +277,7 @@ poetry run temporal-event-predictor
 #### Console Output
 
     ```
-    2025-11-15 20:35:53 - work_time_prediction.security - INFO - Admin token load from environnement variable ADMIN_TOKEN
+    2025-11-15 20:35:53 - temporal_event_predictor.security - INFO - Admin token load from environnement variable ADMIN_TOKEN
     ```
 
 ---
@@ -287,7 +287,7 @@ poetry run temporal-event-predictor
 ### Directory Structure
 
     ```
-    $HOME/work_time_prediction/
+    $HOME/temporal_event_predictor/
     ├── data/
     │   └── sessions/
     │       ├── sessions.db                    # Main DB (sessions, quotas, logs)
