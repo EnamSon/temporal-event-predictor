@@ -1,4 +1,4 @@
-# Temporal Event Prediction API
+# Temporal Event Predictor
 
 Application for predicting temporal intervals for recurrent events
 
@@ -39,8 +39,8 @@ This API allows for the prediction of time intervals (start and end) during whic
 - [Poetry](https://python-poetry.org/)
 
 ```bash
-git clone https://github.com/EnamSon/work-time-prediction.git
-cd work-time-prediction
+git clone https://github.com/EnamSon/temporal-event-predictor.git
+cd temporal-event-predictor
 poetry install
 ```
 
@@ -51,7 +51,7 @@ poetry install
 The server runs at http://127.0.0.1:8000 by default
 
 ```bash
-poetry run work-time-prediction
+poetry run temporal-event-predictor
 ```
 
 You can specify another host IP or another port with optional arguments `--host` or `--port`.
@@ -249,7 +249,7 @@ You can specify another host IP or another port with optional arguments `--host`
 
 If ADMIN_TOKEN is not defined, the application generates an ephemeral token every time it starts:
     ```bash
-    poetry run work-time-prediction
+    poetry run temporal-event-predictor
     ```
 
 #### Console Output
@@ -271,7 +271,7 @@ If ADMIN_TOKEN is not defined, the application generates an ephemeral token ever
 2. Launch the server:
 
 ```bash
-poetry run work-time-prediction
+poetry run temporal-event-predictor
 ```
 
 #### Console Output

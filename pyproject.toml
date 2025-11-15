@@ -1,7 +1,7 @@
 [project]
-name = "work-time-prediction"
+name = "temporal-event-predictor"
 version = "0.1.0"
-description = "Prediction of arrival and departure times of MINDDEVEL Cameroon employees."
+description = "Prediction of temporal intervals for recurrent events."
 authors = [
     {name = "EnamSon",email = "junior.enama@facsciences-uy1.cm"}
 ]
@@ -20,12 +20,12 @@ dependencies = [
 ]
 
 [tool.poetry]
-name = "work-time-prediction"
+name = "temporal-event-predictor"
 version = "0.1.0"
-packages = [{include = "work_time_prediction", from = "src"}]
+packages = [{include = "temporal_event_predictor", from = "src"}]
 
 [tool.poetry.scripts]
-work-time-prediction = "work_time_prediction.main:run"
+temporal-event-predictor = "temporal_event_predictor.main:run"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
